@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン画面</title>
+    <style>
+        header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #f8f9fa;
+        }
+
+        .username {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>ロゴ</div>
+        <div class="username" id="username-display"></div>
+    </header>
+
+    <main>
+        <h2>ログイン</h2>
+        <form id="login-form">
+            <label for="username">名前:</label>
+            <input type="text" id="username" required>
+            <button type="submit">ログイン</button>
+        </form>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // ページロード時に名前をローカルストレージから取得してヘッダーに表示
+            const usernameDisplay = document.getElementById("username-display");
+            const storedUsername = localStorage.getItem("username");
+            if (storedUsername) {
+                usernameDisplay.textContent = storedUsername;
+            }
+
+            // フォーム送信時に名前をローカルストレージに保存
+            const loginForm = document.getElementById("login-form");
+            loginForm.addEventListener("submit", function(event) {
+                event.preventDefault();
+                const usernameInput = document.getElementById("username").value;
+                localStorage.setItem("username", usernameInput);
+                usernameDisplay.textContent = usernameInput; // ヘッダーに表示
+            });
+        });
+    </script>
+</body>
+</html>

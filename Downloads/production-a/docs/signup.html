@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>アカウント作成</title>
+    <!-- FirebaseのCDNを使用してSDKを読み込む（互換モード） -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="firebaseConfig.js"></script>
+    <style>
+      body { font-family: Arial, sans-serif; }
+      .container { max-width: 300px; margin: 0 auto; padding: 20px; }
+      input { width: 100%; padding: 10px; margin: 10px 0; }
+      button { width: 100%; padding: 10px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>アカウント作成</h2>
+      <input type="email" id="email" placeholder="メールアドレス" required>
+      <input type="password" id="password" placeholder="パスワード" required>
+      <button id="signup-btn">アカウント作成</button>
+      <p id="error-message" style="color:red;"></p>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const auth = firebase.auth();
+        const signupButton = document.getElementById('signup-btn');
+
+        signupButton.addEventListener('click', function() {
+          const email = document.getElementById('email').value;
+          const password = document.getElementById('password').value;
+
+          auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+              alert('アカウントが作成されました！');
+              window.location.href = 'index.html'; // リダイレクト
+            })
+            .catch((error) => {
+              document.getElementById('error-message').innerText = error.message;
+            });
+        });
+      });
+    </script>
+  </body>
+</html>

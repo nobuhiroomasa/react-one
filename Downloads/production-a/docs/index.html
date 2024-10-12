@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- キャッシュを無効にするためのメタタグ -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>ミニゲーム集</title>
+    <!-- Google Fontsの追加 -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Firebase SDKの読み込み -->
+    <!-- FirebaseのAuthとFirestoreモジュールの読み込み -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="firebaseConfig.js"></script>
+    <link rel="stylesheet" href="/production-a/docs/demo-repository-main/CSS/Top.css">
+</head>
+
+
+
+<body>
+
+    <header>
+        <ul class="header">
+            <li><a href="/docs//Asteroid/asteroid.htm">Asteroid</a></li>
+            <li><a href="/docs/Blocks/blocks.htm">Blocks</a></li>
+            <li><a href="/docs//MineSweeper/minesweeper.html">MineSweeper</a></li>
+            <li><a href="/docs//Cave/cave.html">Cave</a></li>
+            <li><a href="/docs//MissileCommand/missilecommand.htm">MissileCommand</a></li>
+            <li><a href="/docs/Qix/Qix.htm">Qix</a></li>
+            <li><a href="/docs//Invader/SpaceInvader.htm">Invader</a></li>
+            <li><a href="/docs//Memorizer/memorizer.html">Memorizer</a></li>
+            <li><a href="/docs//SnakeBite/SnakeBite.html">SnakeBite</a></li>
+            <li><a href="/docs/Tetris/Tetris.htm">Tetris</a></li>
+            <li><a href="/docs/index.html">Top</a></li>
+        </ul>
+        <div class="account-container">
+            <div class="account-name" id="account-name"></div> <!-- アカウント名を表示する部分 -->
+            <div class="dropdown-menu" id="dropdown-menu">
+                <div class="nickname-input">
+                    <input type="text" id="nickname" placeholder="ニックネームを入力" />
+                    <button id="save-nickname">保存</button>
+                </div>
+            </div>
+        </div>
+        
+    </header>
+
+
+    <h1>ミニゲーム集へようこそ！</h1>
+
+    <div class="game-list">
+        <div class="game-item">
+            <a href="Asteroid/asteroid.htm">Asteroid</a>
+        </div>
+        <div class="game-item">
+            <a href="Blocks/blocks.htm">Blocks</a>
+        </div>
+        <div class="game-item">
+            <a href="MineSweeper/minesweeper.html">MineSweeper</a>
+        </div>
+        <div class="game-item">
+            <a href="Cave/cave.html">Cave</a>
+        </div>
+        <div class="game-item">
+            <a href="MissileCommand/missilecommand.htm">MissileCommand</a>
+        </div>
+        <div class="game-item">
+            <a href="Qix/Qix.htm">Qix</a>
+        </div>
+        <div class="game-item">
+            <a href="Invader/SpaceInvader.htm">Invader</a>
+        </div>
+        <div class="game-item">
+            <a href="Memorizer/memorizer.html">Memorizer</a>
+        </div>
+        <div class="game-item">
+            <a href="SnakeBite/SnakeBite.html">SnakeBite</a>
+        </div>
+        <div class="game-item">
+            <a href="Tetris/Tetris.htm">Tetris</a>
+        </div>
+    </div>
+
+    <div class="auth-buttons">
+        <button id="login-button" class="auth-button">ログイン</button>
+        <button id="signup-button" class="auth-button">新規登録</button>
+    </div>
+
+    
+    <script>
+
+// ユーザーのログイン状態を監視
+window.onload = () => {
+        // Firebase authenticationの設定
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                document.getElementById('account-name').innerText = user.displayName ? user.displayName.charAt(0) : user.email.charAt(0); // ユーザー名またはメールの最初の文字を表示
+                document.getElementById('account-name').style.display = 'flex'; // 表示する
+            } else {
+                document.getElementById('account-name').style.display = 'none'; // 非表示
+            }
+        });
+        
+
+// Firebase authオブジェクトの取得
+    const auth = firebase.auth();
+    auth.onAuthStateChanged(user => {
+        const loginButton = document.getElementById('login-button');
+        const signupButton = document.getElementById('signup-button');
+        const accountName = document.getElementById('account-name');
+
+        if (user) {
+            // ログインしている場合、アカウント名を表示
+            accountName.innerText = user.displayName ? user.displayName.charAt(0) : user.email.charAt(0);
+            accountName.style.display = 'flex';
+
+            // ログアウトボタンに変更
+            loginButton.innerText = 'ログアウト';
+            loginButton.onclick = () => {
+                auth.signOut().then(() => {
+                    console.log('ユーザーはログアウトしました。');
+                    location.reload();
+                }).catch(error => {
+                    console.error('ログアウトエラー:', error);
+                });
+            };
+            signupButton.style.display = 'none';
+        // アカウント名をクリックしたときにドロップダウンメニューをトグル
+        document.getElementById('account-name').onclick = () => {
+            const dropdownMenu = document.getElementById('dropdown-menu');
+            dropdownMenu.style.display = dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '' ? 'block' : 'none';
+        };
+        
+
+            const newNickname = document.getElementById('nickname').value;
+            if (newNickname) {
+                user.updateProfile({
+                    displayName: newNickname
+                }).then(() => {
+                    console.log("ニックネームが更新されました:", newNickname);
+                    document.getElementById('account-name').innerText = newNickname.charAt(0); // 表示を更新
+                    alert("ニックネームが更新されました！");
+                    document.getElementById('dropdown-menu').style.display = 'none'; // メニューを閉じる
+                }).catch(error => {
+                    console.error("ニックネーム更新エラー:", error);
+                });
+            }
+        
+        } else {
+            // ログインしていない場合
+            accountName.style.display = 'none';
+
+            loginButton.innerText = 'ログイン';
+            loginButton.onclick = () => {
+                location.href = 'login.html';
+            };
+            signupButton.innerText = '新規登録';
+            signupButton.onclick = () => {
+                location.href = 'signup.html';  // signup.html のリンク修正
+            };
+
+        }
+    });
+
+};
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // ログインしている場合
+            console.log("User is logged in:", user);
+            document.getElementById('account-name').innerText = user.displayName ? user.displayName.charAt(0) : user.email.charAt(0);
+        } else {
+            // ログインしていない場合
+            console.log("No user is logged in");
+        }
+    });
+
+    document.getElementById('save-nickname').onclick = function() {
+        const nickname = document.getElementById('nickname').value;
+        const user = firebase.auth().currentUser; // 現在のユーザーを取得
+
+        if (user) {
+            const userEmail = user.email; // ユーザーのEメールを取得
+
+            // Firestoreにデータを保存
+            db.collection('user_name').add({
+                nickname: nickname,
+                email: userEmail,
+            })
+            .then(() => {
+                console.log("ニックネームが保存されました");
+                document.getElementById('nickname').value = ""; // 入力フィールドをクリア
+            })
+            .catch((error) => {
+                console.error("エラー:", error);
+            });
+        } else {
+            console.log("ユーザーがログインしていません");
+        }
+    };
+    
+    </script>
+</body>
+</html>

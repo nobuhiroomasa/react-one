@@ -1,0 +1,90 @@
+<head>
+    <link rel="stylesheet" href="/docs/demo-repository-main/CSS/Top.css" type="text/css">
+
+</head>
+
+<body>
+    <header>
+        <ul class="header">
+            <li><a href="/docs//Asteroid/asteroid.htm">Asteroid</a></li>
+            <li><a href="/docs/Blocks/blocks.htm">Blocks</a></li>
+            <li><a href="/docs//MineSweeper/minesweeper.html">MineSweeper</a></li>
+            <li><a href="/docs//Cave/cave.html">Cave</a></li>
+            <li><a href="/docs//MissileCommand/missilecommand.htm">MissileCommand</a></li>
+            <li><a href="/docs/Qix/Qix.htm">Qix</a></li>
+            <li><a href="/docs//Invader/SpaceInvader.htm">Invader</a></li>
+            <li><a href="/docs//Memorizer/memorizer.html">Memorizer</a></li>
+            <li><a href="/docs//SnakeBite/SnakeBite.html">SnakeBite</a></li>
+            <li><a href="/docs/Tetris/Tetris.htm">Tetris</a></li>
+            <li><a href="/docs/index.html">Top</a></li>
+            <li></li>
+        </ul>
+        
+        <div class="account-container">
+            <div class="account-name" id="account-name"></div> <!-- アカウント名を表示する部分 -->
+            <div class="dropdown-menu" id="dropdown-menu">
+                <div class="nickname-input">
+                    <input type="text" id="nickname" placeholder="ニックネームを入力" />
+                    <button id="save-nickname">保存</button>
+                </div>
+            </div>
+        </div>
+        
+    </header>
+
+    <!-- <script type="module">
+        // Firebaseの初期化
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js';
+        import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Firebaseアプリの初期化
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ユーザーのニックネームを取得する関数
+        async function getNickname() {
+            const user = auth.currentUser; // 現在ログインしているユーザーを取得
+
+            if (user) {
+                const email = user.email; // ユーザーのメールアドレスを取得
+                const userDocRef = doc(db, "user_name", email); // Firestoreのドキュメント参照を作成
+                const userDoc = await getDoc(userDocRef); // ドキュメントを取得
+
+                if (userDoc.exists()) {
+                    const nickname = userDoc.data().nickname; // ニックネームを取得
+                    console.log("ニックネーム:", nickname);
+                    return nickname; // ニックネームを返す
+                } else {
+                    console.log("ユーザードキュメントが存在しません");
+                    return null;
+                }
+            } else {
+                console.log("ユーザーがログインしていません");
+                return null;
+            }
+        }
+
+        // DOMが読み込まれた後にニックネームを表示
+        document.addEventListener("DOMContentLoaded", async () => {
+            const nickname = await getNickname(); // ニックネームを取得
+            const accountNameElement = document.getElementById("account-name");
+
+            if (nickname) {
+                accountNameElement.textContent = nickname; // ニックネームを表示
+            } else {
+                accountNameElement.textContent = "ゲスト"; // ゲストの場合の表示
+            }
+        });
+    </script> -->
+</body>
